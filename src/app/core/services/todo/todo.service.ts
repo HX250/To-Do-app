@@ -14,13 +14,15 @@ export class TodoService {
     private alert: AlertService,
   ) {}
 
-  createNote(task: task): Observable<task> {
-    return this.http.post<task>(this.apiUrl + 'createNote', task).pipe(
-      map(() => {
-        this.alert.showAlert('Task has been created', true);
-      }),
-      catchError((err) => this.errorHandler(err)),
-    );
+  createNote(task: task, userId: string): Observable<task> {
+    return this.http
+      .post<task>(this.apiUrl + `createNote?userId=${userId}`, task)
+      .pipe(
+        map(() => {
+          this.alert.showAlert('Task has been created', true);
+        }),
+        catchError((err) => this.errorHandler(err)),
+      );
   }
 
   loadNotes(userId: string): Observable<task[]> {
@@ -28,6 +30,31 @@ export class TodoService {
       .get<task[]>(`${this.apiUrl}userNotes?userId=${userId}`)
       .pipe(
         map((tasks) => tasks.map((task) => ({ ...task }))),
+        catchError((err) => this.errorHandler(err)),
+      );
+  }
+
+  updateState(task: task, userId: string): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this.apiUrl}userNotes?userId=${userId}&taskId=${task.id}`,
+        task,
+      )
+      .pipe(
+        map(() => {
+          this.alert.showAlert('State has been updated', true);
+        }),
+        catchError((err) => this.errorHandler(err)),
+      );
+  }
+
+  deleteTask(userId: string, id?: number): Observable<any> {
+    return this.http
+      .delete<any>(`${this.apiUrl}deleteNote?userId=${userId}&taskId=${id}`)
+      .pipe(
+        map(() => {
+          this.alert.showAlert('Task has been deleted', true);
+        }),
         catchError((err) => this.errorHandler(err)),
       );
   }

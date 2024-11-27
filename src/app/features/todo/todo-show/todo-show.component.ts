@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TodoService } from 'src/app/core/services/todo/todo.service';
 import { task } from '../models/task.model';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-todo-show',
@@ -30,15 +31,22 @@ export class TodoShowComponent implements OnInit {
       }
     });
   }
+
   completeTask(id?: number) {
     const task = this.taskList.find((task) => task.id === id);
 
     if (task) {
       task.state = !task.state;
+
+      this.todo.updateState(task, this.userId).subscribe();
     }
   }
   removeTask(id?: number) {
-    console.log(id);
+    this.todo.deleteTask(this.userId, id).subscribe({
+      next: (Response) => {
+        window.location.reload();
+      },
+    });
   }
   editTask(id?: number) {
     console.log(id);
