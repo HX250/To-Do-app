@@ -1,5 +1,7 @@
 export interface task {
+  id?: number;
   title: string;
-  descritpion: string;
+  description: string;
   state: boolean;
+  date: Date;
 }

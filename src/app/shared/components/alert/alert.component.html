@@ -1,0 +1,15 @@
+<div
+  [ngClass]="{
+    'h-12 border-l-4 border-green-500 text-green-500':
+      alertState.isShown && alertState.status,
+    'h-12 border-l-4 border-red-500 text-red-500':
+      alertState.isShown && !alertState.status,
+    'h-0 border-l-0': !alertState.isShown,
+  }"
+  class="mx-2 flex items-center justify-start gap-4 bg-slate-100 pl-4 transition-all"
+  role="alert"
+>
+  <div class="text-center text-sm font-semibold sm:text-lg">
+    {{ alertState.message }}
+  </div>
+</div>

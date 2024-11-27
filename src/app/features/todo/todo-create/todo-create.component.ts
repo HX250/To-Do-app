@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TodoService } from 'src/app/core/services/todo/todo.service';
 
 @Component({
   selector: 'app-todo-create',
@@ -9,7 +10,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class TodoCreateComponent {
   todoCreate: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private todo: TodoService,
+  ) {
     this.todoCreate = fb.group({
       title: ['', Validators.required],
       descritpion: ['', Validators.required],
@@ -17,6 +21,10 @@ export class TodoCreateComponent {
     });
   }
   addTask() {
-    console.log(this.todoCreate.value);
+    this.todo.createNote(this.todoCreate.value).subscribe({
+      next: (Response) => {
+        this.todoCreate.reset();
+      },
+    });
   }
 }

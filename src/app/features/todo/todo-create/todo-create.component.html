@@ -9,16 +9,17 @@
                 formControlName="title"
                 type="text"
                 class="w-full rounded-lg border-2 border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
-                placeholder="Add new task"
+                placeholder="Task title"
               />
               <textarea
                 formControlName="descritpion"
                 class="h-36 w-full rounded-lg border-2 border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
-                placeholder="Descritpion"
+                placeholder="Description"
               ></textarea>
             </div>
           </div>
           <button
+            [disabled]="todoCreate.invalid"
             class="rounded bg-indigo-600 px-4 py-2 font-bold text-white hover:bg-indigo-700"
           >
             Add

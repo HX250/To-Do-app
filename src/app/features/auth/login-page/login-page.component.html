@@ -1,9 +1,15 @@
 <div class="flex min-h-[90svh] flex-col items-center justify-center">
   <div class="flex w-full max-w-96 flex-col items-center justify-center">
-    <form class="flex w-full flex-col gap-6 px-4" action="#" method="POST">
+    <form
+      class="flex w-full flex-col gap-6 px-4"
+      action="#"
+      [formGroup]="loginForm"
+      (ngSubmit)="loginUser()"
+      method="POST"
+    >
       <div>
         <label for="email" class="block text-sm/6 font-medium text-gray-900"
-          >Email address</label
+          >Email</label
         >
         <div class="mt-2">
           <input
@@ -11,8 +17,17 @@
             name="email"
             type="email"
             formControlName="email"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+            class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
           />
+          <div
+            *ngIf="
+              f['email'].errors?.['required'] &&
+              (f['email'].dirty || f['email'].touched)
+            "
+            class="text-red-600"
+          >
+            Email is needed for login
+          </div>
         </div>
       </div>
 
@@ -30,14 +45,23 @@
             name="password"
             type="password"
             formControlName="password"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+            class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
           />
+          <div
+            *ngIf="
+              f['password'].errors?.['required'] &&
+              (f['password'].dirty || f['password'].touched)
+            "
+            class="text-red-600"
+          >
+            Password is needed for login
+          </div>
         </div>
       </div>
 
       <div>
         <button
-          type="submit"
+          [disabled]="loginForm.invalid"
           class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Sign in

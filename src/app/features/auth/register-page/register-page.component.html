@@ -1,0 +1,100 @@
+<div class="flex min-h-[90svh] flex-col items-center justify-center">
+  <div class="flex w-full max-w-96 flex-col items-center justify-center">
+    <form
+      class="flex w-full flex-col gap-6 px-4"
+      action="#"
+      method="POST"
+      (ngSubmit)="registerUser()"
+      [formGroup]="registerForm"
+    >
+      <div>
+        <label for="email" class="block text-sm/6 font-medium text-gray-900"
+          >Email</label
+        >
+        <input
+          type="email"
+          formControlName="email"
+          name="email"
+          id="email"
+          class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+        />
+        <div
+          *ngIf="
+            f['email'].errors?.['required'] &&
+            (f['email'].dirty || f['email'].touched)
+          "
+          class="text-red-600"
+        >
+          Email is needed for register
+        </div>
+        <div
+          *ngIf="
+            f['email'].errors?.['email'] &&
+            (f['email'].dirty || f['email'].touched)
+          "
+          class="text-red-600"
+        >
+          <p>Wrong email format</p>
+        </div>
+      </div>
+      <div>
+        <label for="password" class="block text-sm/6 font-medium text-gray-900"
+          >Password</label
+        >
+        <input
+          type="password"
+          name="password"
+          formControlName="password"
+          id="password"
+          class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+        />
+        <div
+          *ngIf="
+            f['password'].errors?.['required'] &&
+            (f['password'].dirty || f['password'].touched)
+          "
+          class="text-red-600"
+        >
+          Password is needed for register
+        </div>
+      </div>
+      <div>
+        <label
+          for="confirm-password"
+          class="block text-sm/6 font-medium text-gray-900"
+          >Repeat password</label
+        >
+        <input
+          type="password"
+          formControlName="repeatPassword"
+          name="confirm-password"
+          id="confirm-password"
+          class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+        />
+        <div
+          *ngIf="
+            f['repeatPassword'].errors?.['required'] &&
+            (f['repeatPassword'].dirty || f['repeatPassword'].touched)
+          "
+          class="text-red-600"
+        >
+          Repeat passowrd is needed for register
+        </div>
+      </div>
+      <div>
+        <button
+          [disabled]="registerForm.invalid"
+          class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Sign in
+        </button>
+      </div>
+    </form>
+    <p class="mt-10 text-sm font-light text-gray-500 dark:text-gray-400">
+      Already have an account?
+      <a routerLink="/" class="font-semibold text-indigo-600 hover:opacity-80"
+        >Login here</a
+      >
+    </p>
+  </div>
+</div>
