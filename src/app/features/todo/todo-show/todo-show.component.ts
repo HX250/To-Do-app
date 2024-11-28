@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TodoService } from 'src/app/core/services/todo/todo.service';
 import { task } from '../models/task.model';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-todo-show',
@@ -12,6 +11,8 @@ import { state } from '@angular/animations';
 export class TodoShowComponent implements OnInit {
   taskList: task[] = [];
   userId: string = '';
+  isEditShown: boolean = false;
+  currentChosenTask: task | undefined = undefined;
 
   constructor(
     private todo: TodoService,
@@ -23,12 +24,16 @@ export class TodoShowComponent implements OnInit {
       this.userId = userId;
 
       if (this.userId) {
-        this.todo.loadNotes(this.userId).subscribe({
-          next: (Response) => {
-            this.taskList = Response;
-          },
-        });
+        this.loadNotesMethod();
       }
+    });
+  }
+
+  loadNotesMethod() {
+    this.todo.loadNotes(this.userId).subscribe({
+      next: (Response) => {
+        this.taskList = Response;
+      },
     });
   }
 
@@ -44,11 +49,17 @@ export class TodoShowComponent implements OnInit {
   removeTask(id?: number) {
     this.todo.deleteTask(this.userId, id).subscribe({
       next: (Response) => {
-        window.location.reload();
+        this.loadNotesMethod();
       },
     });
   }
-  editTask(id?: number) {
-    console.log(id);
+  editTask(task: task) {
+    this.isEditShown = true;
+    this.currentChosenTask = task;
+  }
+
+  closeEdit() {
+    this.loadNotesMethod();
+    this.isEditShown = false;
   }
 }

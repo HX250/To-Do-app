@@ -1,0 +1,42 @@
+<div
+  class="flex h-full w-full items-center justify-center bg-black bg-opacity-60 px-6"
+>
+  <div
+    class="relative top-5 flex h-fit w-full max-w-96 flex-col gap-1 rounded-lg bg-white p-6 md:top-0"
+  >
+    <button
+      (click)="closeModalWindow()"
+      class="absolute -right-5 -top-5 w-10 rounded-full bg-indigo-600 px-2 py-2 transition-all hover:scale-110"
+    >
+      <span class="flex items-center justify-center font-semibold text-white"
+        >X</span
+      >
+    </button>
+    <div>
+      <div>Task id: {{ currentTask?.id }}</div>
+      <div>Created at: {{ currentTask?.date }}</div>
+    </div>
+    <form
+      [formGroup]="editedTask"
+      (ngSubmit)="updateTask(currentTask)"
+      class="flex flex-col gap-2"
+    >
+      <input
+        formControlName="title"
+        type="text"
+        class="w-full rounded-lg border-2 border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+        placeholder="Task title"
+      />
+      <textarea
+        formControlName="description"
+        class="h-36 w-full rounded-lg border-2 border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+        placeholder="Description"
+      ></textarea>
+      <button
+        class="w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500"
+      >
+        Save
+      </button>
+    </form>
+  </div>
+</div>

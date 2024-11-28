@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AlertService } from '../alert/alert.service';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { task } from 'src/app/features/todo/models/task.model';
+import { formatDate } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,8 @@ export class TodoService {
   ) {}
 
   createNote(task: task, userId: string): Observable<task> {
+    const currentDate = Date();
+    task.date = formatDate(currentDate, 'dd/MM/yyyy', 'en-US');
     return this.http
       .post<task>(this.apiUrl + `createNote?userId=${userId}`, task)
       .pipe(
@@ -54,6 +57,20 @@ export class TodoService {
       .pipe(
         map(() => {
           this.alert.showAlert('Task has been deleted', true);
+        }),
+        catchError((err) => this.errorHandler(err)),
+      );
+  }
+
+  updateTask(userId: string, taskForm: any, id?: number): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this.apiUrl}updateTask?userId=${userId}&updatedTask=${id}`,
+        taskForm,
+      )
+      .pipe(
+        map(() => {
+          this.alert.showAlert('Task has been updated', true);
         }),
         catchError((err) => this.errorHandler(err)),
       );

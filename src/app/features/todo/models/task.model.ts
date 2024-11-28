@@ -3,5 +3,5 @@ export interface task {
   title: string;
   description: string;
   state: boolean;
-  date: Date;
+  date: string;
 }

@@ -1,6 +1,4 @@
-<div
-  class="grid h-full w-full grid-cols-1 gap-4 px-2 pt-4 sm:grid-cols-2 md:px-24 lg:grid-cols-3"
->
+<div class="pt-4">
   <div *ngIf="taskList.length == 0; else showItems">
     <p class="pt-4 text-center text-xl">
       To see your tasks
@@ -13,42 +11,54 @@
   </div>
   <ng-template #showItems>
     <div
-      *ngFor="let task of taskList"
-      [ngClass]="{
-        'border-green-500 bg-green-300': task.state,
-        'border-indigo-600 bg-white': !task.state,
-      }"
-      class="flex w-full items-center justify-between rounded-md border-2 border-indigo-600 px-6 py-4"
+      class="grid h-full w-full grid-cols-1 gap-4 px-2 sm:grid-cols-2 lg:grid-cols-3"
     >
-      <div class="flex flex-col">
-        <p class="text-xs">{{ task.id }}</p>
-        <p class="text-xl font-semibold">{{ task.title }}</p>
-        <p class="text-sm text-gray-400">{{ task.date }}</p>
-        <p>{{ task.description }}</p>
-      </div>
-      <div class="flex flex-col gap-2">
-        <button (click)="editTask(task.id)">
-          <img
-            src="../assets/edit.png"
-            alt=""
-            class="h-8 w-8 transition-all hover:scale-110"
-          />
-        </button>
-        <button (click)="completeTask(task.id)">
-          <img
-            src="../assets/accept.png"
-            alt=""
-            class="h-8 w-8 transition-all hover:scale-110"
-          />
-        </button>
-        <button (click)="removeTask(task.id)">
-          <img
-            src="../assets/remove.png"
-            alt=""
-            class="h-8 w-8 transition-all hover:scale-110"
-          />
-        </button>
+      <div
+        *ngFor="let task of taskList"
+        [ngClass]="{
+          'border-green-500 bg-green-300': task.state,
+          'border-indigo-600 bg-white': !task.state,
+        }"
+        class="flex w-full items-center justify-between rounded-md border-2 border-indigo-600 px-6 py-4"
+      >
+        <div class="flex flex-col">
+          <p class="text-xs">{{ task.id }}</p>
+          <p class="text-xl font-semibold">{{ task.title }}</p>
+          <p class="text-sm text-gray-400">{{ task.date }}</p>
+          <p>{{ task.description }}</p>
+        </div>
+        <div class="flex flex-col gap-2">
+          <button (click)="editTask(task)">
+            <img
+              src="../assets/edit.png"
+              alt=""
+              class="h-8 w-8 transition-all hover:scale-110"
+            />
+          </button>
+          <button (click)="completeTask(task.id)">
+            <img
+              src="../assets/accept.png"
+              alt=""
+              class="h-8 w-8 transition-all hover:scale-110"
+            />
+          </button>
+          <button (click)="removeTask(task.id)">
+            <img
+              src="../assets/remove.png"
+              alt=""
+              class="h-8 w-8 transition-all hover:scale-110"
+            />
+          </button>
+        </div>
       </div>
     </div>
   </ng-template>
+  <app-todo-edit
+    [currentTask]="currentChosenTask"
+    [userId]="userId"
+    class="absolute top-0 z-50 h-full w-full"
+    *ngIf="isEditShown"
+    (updatedWindowShown)="closeEdit()"
+    (closeWindowWhenClickOutside)="closeEdit()"
+  ></app-todo-edit>
 </div>
