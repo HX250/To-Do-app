@@ -37,11 +37,19 @@
           </button>
           <button (click)="completeTask(task.id)">
             <img
+              *ngIf="!task.state"
               src="../assets/accept.png"
               alt=""
               class="h-8 w-8 transition-all hover:scale-110"
             />
+            <img
+              *ngIf="task.state"
+              src="../assets/uncheck.png"
+              alt=""
+              class="h-8 w-8 transition-all hover:scale-110"
+            />
           </button>
+
           <button (click)="removeTask(task.id)">
             <img
               src="../assets/remove.png"
