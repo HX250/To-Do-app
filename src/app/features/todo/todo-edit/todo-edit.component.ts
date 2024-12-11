@@ -32,10 +32,6 @@ export class TodoEditComponent implements OnInit {
     });
   }
 
-  closeRoleSelection() {
-    this.updatedWindowShown.emit();
-  }
-
   closeModalWindow() {
     this.updatedWindowShown.emit();
   }

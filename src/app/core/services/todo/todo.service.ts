@@ -15,11 +15,11 @@ export class TodoService {
     private alert: AlertService,
   ) {}
 
-  createNote(task: task, userId: string): Observable<task> {
+  createNote(task: task, userId: string): Observable<any> {
     const currentDate = Date();
     task.date = formatDate(currentDate, 'dd/MM/yyyy', 'en-US');
     return this.http
-      .post<task>(this.apiUrl + `createNote?userId=${userId}`, task)
+      .post<any>(this.apiUrl + `createNote?userId=${userId}`, task)
       .pipe(
         map(() => {
           this.alert.showAlert('Task has been created', true);
@@ -31,10 +31,7 @@ export class TodoService {
   loadNotes(userId: string): Observable<task[]> {
     return this.http
       .get<task[]>(`${this.apiUrl}userNotes?userId=${userId}`)
-      .pipe(
-        map((tasks) => tasks.map((task) => ({ ...task }))),
-        catchError((err) => this.errorHandler(err)),
-      );
+      .pipe(catchError((err) => this.errorHandler(err)));
   }
 
   updateState(task: task, userId: string): Observable<any> {
