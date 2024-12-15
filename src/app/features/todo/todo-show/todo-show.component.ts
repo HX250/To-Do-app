@@ -20,21 +20,23 @@ export class TodoShowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.auth.userIdState$.subscribe((userId) => {
-      this.userId = userId;
-
-      if (this.userId) {
-        this.loadNotesMethod();
-      }
-    });
+    //this.auth.userIdState$.subscribe((userId) => {
+    //  this.userId = userId;
+    //
+    //  if (this.userId) {
+    //    this.loadNotesMethod();
+    //  }
+    //});
+    this.loadNotesMethod();
   }
 
   loadNotesMethod() {
-    this.todo.loadNotes(this.userId).subscribe({
-      next: (Response) => {
-        this.taskList = Response;
-      },
-    });
+    //this.todo.loadNotes(this.userId).subscribe({
+    //  next: (Response) => {
+    //    this.taskList = Response;
+    //  },
+    //});
+    this.taskList = this.todo.testingTaskList;
   }
 
   completeTask(id?: number) {

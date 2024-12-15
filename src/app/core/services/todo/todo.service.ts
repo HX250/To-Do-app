@@ -10,6 +10,43 @@ import { formatDate } from '@angular/common';
 })
 export class TodoService {
   apiUrl = 'http://localhost:3000/';
+  testingTaskList: task[] = [
+    {
+      id: 1,
+      title: 'Complete Project Documentation',
+      description: 'Finalize and submit the documentation for the new project.',
+      state: false,
+      date: '2024-12-16',
+    },
+    {
+      id: 2,
+      title: 'Team Meeting',
+      description: 'Discuss project milestones and upcoming deadlines.',
+      state: true,
+      date: '2024-12-15',
+    },
+    {
+      id: 3,
+      title: 'Code Review',
+      description: 'Review pull requests and provide feedback to the team.',
+      state: false,
+      date: '2024-12-18',
+    },
+    {
+      id: 4,
+      title: 'Update Dependencies',
+      description: 'Update outdated NPM dependencies in the project.',
+      state: true,
+      date: '2024-12-14',
+    },
+    {
+      id: 5,
+      title: 'Bug Fixing',
+      description: 'Fix high-priority bugs reported by the QA team.',
+      state: false,
+      date: '2024-12-17',
+    },
+  ];
   constructor(
     private http: HttpClient,
     private alert: AlertService,
