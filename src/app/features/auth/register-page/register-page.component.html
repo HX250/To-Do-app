@@ -80,6 +80,15 @@
         >
           Repeat passowrd is needed for register
         </div>
+        <div
+          *ngIf="
+            f['repeatPassword'].errors?.['passwordsMismatch'] &&
+            (f['repeatPassword'].dirty || f['repeatPassword'].touched)
+          "
+          class="text-red-600"
+        >
+          Passwords do not match
+        </div>
       </div>
       <div>
         <button
@@ -92,9 +101,12 @@
     </form>
     <p class="mt-10 text-sm font-light text-gray-500 dark:text-gray-400">
       Already have an account?
-      <a routerLink="/" class="font-semibold text-indigo-600 hover:opacity-80"
-        >Login here</a
-      >
     </p>
+    <button
+      routerLink="/"
+      class="font-semibold text-indigo-600 hover:opacity-80"
+    >
+      Login here
+    </button>
   </div>
 </div>

@@ -24,7 +24,9 @@
         <div class="flex flex-col">
           <p class="text-xs">{{ task.id }}</p>
           <p class="text-xl font-semibold">{{ task.title }}</p>
-          <p class="text-sm text-gray-400">{{ task.date }}</p>
+          <p class="text-sm text-gray-400">
+            {{ task.createdAt | date: "short" }}
+          </p>
           <p>{{ task.description }}</p>
         </div>
         <div class="flex flex-col gap-2">
@@ -63,7 +65,6 @@
   </ng-template>
   <app-todo-edit
     [currentTask]="currentChosenTask"
-    [userId]="userId"
     class="absolute top-0 z-50 h-full w-full"
     *ngIf="isEditShown"
     (updatedWindowShown)="closeEdit()"

@@ -27,6 +27,9 @@ export class TodoEditComponent implements OnInit {
   }
   createEditFormGroup() {
     this.editedTask = this.fb.group({
+      id: [this.currentTask?.id],
+      createdAt: [this.currentTask?.createdAt],
+      state: [this.currentTask?.state],
       title: [this.currentTask?.title, ''],
       description: [this.currentTask?.description, ''],
     });
@@ -43,13 +46,11 @@ export class TodoEditComponent implements OnInit {
     ) {
       this.alert.showAlert('Task needs to be edited to submit', false);
     } else {
-      this.todo
-        .updateTask(this.userId, this.editedTask.value, task?.id)
-        .subscribe({
-          next: (Response) => {
-            this.updatedWindowShown.emit();
-          },
-        });
+      this.todo.updateTask(this.editedTask.value).subscribe({
+        next: (Response) => {
+          this.updatedWindowShown.emit();
+        },
+      });
     }
   }
 }

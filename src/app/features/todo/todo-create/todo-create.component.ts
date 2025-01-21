@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AlertService } from 'src/app/core/services/alert/alert.service';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { TodoService } from 'src/app/core/services/todo/todo.service';
 
@@ -16,24 +17,21 @@ export class TodoCreateComponent {
     private fb: FormBuilder,
     private todo: TodoService,
     private auth: AuthService,
+    private alert: AlertService,
   ) {
     this.todoCreate = fb.group({
       title: ['', Validators.required],
-      descritpion: ['', Validators.required],
-      state: [false],
+      description: ['', Validators.required],
     });
   }
   addTask() {
-    this.auth.userIdState$.subscribe((userId) => {
-      this.userId = userId;
-
-      if (this.userId) {
-        this.todo.createNote(this.todoCreate.value, userId).subscribe({
-          next: (Response) => {
-            this.todoCreate.reset();
-          },
-        });
-      }
+    this.todo.createNote(this.todoCreate.value).subscribe({
+      next: (Response) => {
+        this.todoCreate.reset();
+      },
+      complete: () => {
+        this.alert.showAlert('Task has been created', true);
+      },
     });
   }
 }

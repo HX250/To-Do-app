@@ -9,7 +9,7 @@ import { AlertService } from '../alert/alert.service';
   providedIn: 'root',
 })
 export class AuthService {
-  apiUrl = 'http://localhost:3000/';
+  apiUrl = 'http://localhost:5110/';
 
   private userIdSubject = new BehaviorSubject<string>(
     this.getStoredToken() || '',
@@ -23,19 +23,18 @@ export class AuthService {
   ) {}
 
   login(loginCred: auth): Observable<any> {
-    return this.http.post(this.apiUrl + 'login', loginCred).pipe(
+    return this.http.post(this.apiUrl + 'api/user/login', loginCred).pipe(
       map((Response: any) => {
         this.alert.showAlert('User has been logged in', true);
         this.setToken(Response.token);
         this.router.navigateByUrl('/todo');
-        return true;
       }),
       catchError((err) => this.errorHandler(err)),
     );
   }
 
   register(registerCred: auth): Observable<any> {
-    return this.http.post(this.apiUrl + 'register', registerCred).pipe(
+    return this.http.post(this.apiUrl + 'api/user/register', registerCred).pipe(
       map((Response) => {
         this.alert.showAlert('User has been registered', true);
         this.router.navigateByUrl('/');
@@ -53,11 +52,11 @@ export class AuthService {
 
   setToken(token: string): void {
     this.userIdSubject.next(token);
-    localStorage.setItem('id', token);
+    localStorage.setItem('token', token);
   }
 
   private getStoredToken(): string | null {
-    return localStorage.getItem('id');
+    return localStorage.getItem('token');
   }
 
   errorHandler(err: any): Observable<any> {
