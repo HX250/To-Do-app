@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from 'src/app/core/services/todo/todo.service';
 import { task } from '../models/task.model';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-todo-show',
@@ -10,33 +9,22 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 })
 export class TodoShowComponent implements OnInit {
   taskList: task[] = [];
-  userId: string = '';
+
   isEditShown: boolean = false;
   currentChosenTask: task | undefined = undefined;
 
-  constructor(
-    private todo: TodoService,
-    private auth: AuthService,
-  ) {}
+  constructor(private todo: TodoService) {}
 
   ngOnInit(): void {
-    //this.auth.userIdState$.subscribe((userId) => {
-    //  this.userId = userId;
-    //
-    //  if (this.userId) {
-    //    this.loadNotesMethod();
-    //  }
-    //});
     this.loadNotesMethod();
   }
 
   loadNotesMethod() {
-    //this.todo.loadNotes(this.userId).subscribe({
-    //  next: (Response) => {
-    //    this.taskList = Response;
-    //  },
-    //});
-    this.taskList = this.todo.testingTaskList;
+    this.todo.loadNotes().subscribe({
+      next: (Response) => {
+        this.taskList = Response;
+      },
+    });
   }
 
   completeTask(id?: number) {
@@ -45,11 +33,11 @@ export class TodoShowComponent implements OnInit {
     if (task) {
       task.state = !task.state;
 
-      this.todo.updateState(task, this.userId).subscribe();
+      this.todo.updateTask(task).subscribe();
     }
   }
   removeTask(id?: number) {
-    this.todo.deleteTask(this.userId, id).subscribe({
+    this.todo.deleteTask(id).subscribe({
       next: (Response) => {
         this.loadNotesMethod();
       },

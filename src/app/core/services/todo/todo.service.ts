@@ -9,105 +9,43 @@ import { formatDate } from '@angular/common';
   providedIn: 'root',
 })
 export class TodoService {
-  apiUrl = 'http://localhost:3000/';
-  testingTaskList: task[] = [
-    {
-      id: 1,
-      title: 'Complete Project Documentation',
-      description: 'Finalize and submit the documentation for the new project.',
-      state: false,
-      date: '2024-12-16',
-    },
-    {
-      id: 2,
-      title: 'Team Meeting',
-      description: 'Discuss project milestones and upcoming deadlines.',
-      state: true,
-      date: '2024-12-15',
-    },
-    {
-      id: 3,
-      title: 'Code Review',
-      description: 'Review pull requests and provide feedback to the team.',
-      state: false,
-      date: '2024-12-18',
-    },
-    {
-      id: 4,
-      title: 'Update Dependencies',
-      description: 'Update outdated NPM dependencies in the project.',
-      state: true,
-      date: '2024-12-14',
-    },
-    {
-      id: 5,
-      title: 'Bug Fixing',
-      description: 'Fix high-priority bugs reported by the QA team.',
-      state: false,
-      date: '2024-12-17',
-    },
-  ];
+  apiUrl = 'http://localhost:5110/';
   constructor(
     private http: HttpClient,
     private alert: AlertService,
   ) {}
 
-  createNote(task: task, userId: string): Observable<any> {
-    const currentDate = Date();
-    task.date = formatDate(currentDate, 'dd/MM/yyyy', 'en-US');
-    return this.http
-      .post<any>(this.apiUrl + `createNote?userId=${userId}`, task)
-      .pipe(
-        map(() => {
-          this.alert.showAlert('Task has been created', true);
-        }),
-        catchError((err) => this.errorHandler(err)),
-      );
+  createNote(task: task): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}api/ToDo`, task).pipe(
+      map(() => {
+        this.alert.showAlert('Task has been created', true);
+      }),
+      catchError((err) => this.errorHandler(err)),
+    );
   }
 
-  loadNotes(userId: string): Observable<task[]> {
+  loadNotes(): Observable<task[]> {
     return this.http
-      .get<task[]>(`${this.apiUrl}userNotes?userId=${userId}`)
+      .get<task[]>(`${this.apiUrl}api/ToDo`)
       .pipe(catchError((err) => this.errorHandler(err)));
   }
 
-  updateState(task: task, userId: string): Observable<any> {
-    return this.http
-      .put<any>(
-        `${this.apiUrl}userNotes?userId=${userId}&taskId=${task.id}`,
-        task,
-      )
-      .pipe(
-        map(() => {
-          this.alert.showAlert('State has been updated', true);
-        }),
-        catchError((err) => this.errorHandler(err)),
-      );
+  deleteTask(id?: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}api/ToDo/${id}`).pipe(
+      map(() => {
+        this.alert.showAlert('Task has been deleted', true);
+      }),
+      catchError((err) => this.errorHandler(err)),
+    );
   }
 
-  deleteTask(userId: string, id?: number): Observable<any> {
-    return this.http
-      .delete<any>(`${this.apiUrl}deleteNote?userId=${userId}&taskId=${id}`)
-      .pipe(
-        map(() => {
-          this.alert.showAlert('Task has been deleted', true);
-        }),
-        catchError((err) => this.errorHandler(err)),
-      );
-  }
-
-  updateTask(userId: string, taskForm: any, id?: number): Observable<any> {
-    return this.http
-      .put<any>(
-        `${this.apiUrl}updateTask?userId=${userId}&updatedTask=${id}`,
-        taskForm,
-      )
-      .pipe(
-        map(() => {
-          this.alert.showAlert('Task has been updated', true);
-        }),
-        catchError((err) => this.errorHandler(err)),
-      );
+  updateTask(taskForm: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}api/ToDo`, taskForm).pipe(
+      map(() => {
+        this.alert.showAlert('Task has been updated', true);
+      }),
+      catchError((err) => this.errorHandler(err)),
+    );
   }
 
   errorHandler(err: any): Observable<any> {

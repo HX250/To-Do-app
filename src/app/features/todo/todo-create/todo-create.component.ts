@@ -22,24 +22,16 @@ export class TodoCreateComponent {
     this.todoCreate = fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      Date: [new Date()],
-      state: [false],
     });
   }
   addTask() {
-    this.todo.testingTaskList.push(this.todoCreate.value);
-    this.todoCreate.reset();
-    this.alert.showAlert('Task has been created', true);
-    //this.auth.userIdState$.subscribe((userId) => {
-    //  this.userId = userId;
-    //
-    //  if (this.userId) {
-    //    this.todo.createNote(this.todoCreate.value, userId).subscribe({
-    //      next: (Response) => {
-    //        this.todoCreate.reset();
-    //      },
-    //    });
-    //  }
-    //});
+    this.todo.createNote(this.todoCreate.value).subscribe({
+      next: (Response) => {
+        this.todoCreate.reset();
+      },
+      complete: () => {
+        this.alert.showAlert('Task has been created', true);
+      },
+    });
   }
 }
