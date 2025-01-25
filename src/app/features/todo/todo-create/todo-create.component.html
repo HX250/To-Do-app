@@ -6,12 +6,22 @@
           <div class="flex w-full">
             <div class="flex w-full flex-col gap-2">
               <input
+                [ngClass]="{
+                  'border-red-500':
+                    todoCreate.get('title')?.invalid &&
+                    todoCreate.get('title')?.touched,
+                }"
                 formControlName="title"
                 type="text"
-                class="w-full rounded-lg border-2 border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+                class="w-full rounded-lg border-2 px-4 py-2 focus:border-blue-500 focus:outline-none"
                 placeholder="Task title"
               />
               <textarea
+                [ngClass]="{
+                  'border-red-500':
+                    todoCreate.get('description')?.invalid &&
+                    todoCreate.get('description')?.touched,
+                }"
                 formControlName="description"
                 class="h-36 w-full rounded-lg border-2 border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
                 placeholder="Description"
@@ -19,7 +29,6 @@
             </div>
           </div>
           <button
-            [disabled]="todoCreate.invalid"
             class="rounded bg-indigo-600 px-4 py-2 font-bold text-white hover:bg-indigo-700"
           >
             Add

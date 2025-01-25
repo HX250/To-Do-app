@@ -9,9 +9,13 @@ import { task } from '../models/task.model';
 })
 export class TodoShowComponent implements OnInit {
   taskList: task[] = [];
+  filteredTaskList: task[] = [];
 
   isEditShown: boolean = false;
   currentChosenTask: task | undefined = undefined;
+
+  filterStartDate: string = '';
+  filterEndDate: string = '';
 
   constructor(private todo: TodoService) {}
 
@@ -23,8 +27,28 @@ export class TodoShowComponent implements OnInit {
     this.todo.loadNotes().subscribe({
       next: (Response) => {
         this.taskList = Response;
+        this.filteredTaskList = [...this.taskList];
       },
     });
+  }
+
+  filterTasksByDate() {
+    const startDate = new Date(this.filterStartDate);
+    const endDate = new Date(this.filterEndDate);
+
+    this.filteredTaskList = this.taskList.filter((task) => {
+      const taskDate = new Date(task.createdAt);
+      return (
+        (!this.filterStartDate || taskDate >= startDate) &&
+        (!this.filterEndDate || taskDate <= endDate)
+      );
+    });
+  }
+
+  resetFilter() {
+    this.filterStartDate = '';
+    this.filterEndDate = '';
+    this.filteredTaskList = [...this.taskList];
   }
 
   completeTask(id?: number) {
@@ -36,6 +60,7 @@ export class TodoShowComponent implements OnInit {
       this.todo.updateTask(task).subscribe();
     }
   }
+
   removeTask(id?: number) {
     this.todo.deleteTask(id).subscribe({
       next: (Response) => {
@@ -43,6 +68,7 @@ export class TodoShowComponent implements OnInit {
       },
     });
   }
+
   editTask(task: task) {
     this.isEditShown = true;
     this.currentChosenTask = task;

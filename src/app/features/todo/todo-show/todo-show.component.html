@@ -1,12 +1,40 @@
 <div class="pt-4">
-  <div *ngIf="taskList.length == 0; else showItems">
+  <div class="mb-4 flex justify-center gap-4">
+    <div class="flex flex-col">
+      <label for="startDate" class="text-sm font-medium">Start Date</label>
+      <input
+        type="date"
+        id="startDate"
+        [(ngModel)]="filterStartDate"
+        class="rounded border px-2 py-1"
+      />
+    </div>
+    <div class="flex flex-col">
+      <label for="endDate" class="text-sm font-medium">End Date</label>
+      <input
+        type="date"
+        id="endDate"
+        [(ngModel)]="filterEndDate"
+        class="rounded border px-2 py-1"
+      />
+    </div>
+    <button
+      (click)="filterTasksByDate()"
+      class="self-end rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-500"
+    >
+      Filter
+    </button>
+    <button
+      (click)="resetFilter()"
+      class="self-end rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-400"
+    >
+      Reset
+    </button>
+  </div>
+
+  <div *ngIf="filteredTaskList.length == 0; else showItems">
     <p class="pt-4 text-center text-xl">
-      To see your tasks
-      <a
-        routerLink="/todo"
-        class="font-semibold text-indigo-600 hover:opacity-80"
-        >add them</a
-      >
+      No tasks found for the selected date range.
     </p>
   </div>
   <ng-template #showItems>
@@ -14,7 +42,7 @@
       class="grid h-full w-full grid-cols-1 gap-4 px-2 sm:grid-cols-2 lg:grid-cols-3"
     >
       <div
-        *ngFor="let task of taskList"
+        *ngFor="let task of filteredTaskList"
         [ngClass]="{
           'border-green-500 bg-green-300': task.state,
           'border-indigo-600 bg-white': !task.state,
@@ -51,7 +79,6 @@
               class="h-8 w-8 transition-all hover:scale-110"
             />
           </button>
-
           <button (click)="removeTask(task.id)">
             <img
               src="../assets/remove.png"

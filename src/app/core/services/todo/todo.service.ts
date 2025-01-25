@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AlertService } from '../alert/alert.service';
 import { catchError, EMPTY, map, Observable } from 'rxjs';
 import { task } from 'src/app/features/todo/models/task.model';
-import { formatDate } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
