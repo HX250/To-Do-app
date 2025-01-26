@@ -14,8 +14,8 @@ export class TodoService {
     private alert: AlertService,
   ) {}
 
-  createNote(task: task): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}api/ToDo`, task).pipe(
+  createNote(task: task): Observable<void> {
+    return this.http.post(`${this.apiUrl}api/ToDo`, task).pipe(
       map(() => {
         this.alert.showAlert('Task has been created', true);
       }),
@@ -29,8 +29,8 @@ export class TodoService {
       .pipe(catchError((err) => this.errorHandler(err)));
   }
 
-  deleteTask(id?: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}api/ToDo/${id}`).pipe(
+  deleteTask(id?: number): Observable<void> {
+    return this.http.delete(`${this.apiUrl}api/ToDo/${id}`).pipe(
       map(() => {
         this.alert.showAlert('Task has been deleted', true);
       }),
@@ -38,8 +38,8 @@ export class TodoService {
     );
   }
 
-  updateTask(taskForm: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}api/ToDo`, taskForm).pipe(
+  updateTask(taskForm: task): Observable<void> {
+    return this.http.put(`${this.apiUrl}api/ToDo`, taskForm).pipe(
       map(() => {
         this.alert.showAlert('Task has been updated', true);
       }),
